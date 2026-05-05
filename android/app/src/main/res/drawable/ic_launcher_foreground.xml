@@ -1,0 +1,30 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Coaster track loops -->
+    <path
+        android:strokeColor="#FFEB3B"
+        android:strokeWidth="4"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M22,80 C22,40 86,40 86,80" />
+    <path
+        android:strokeColor="#FF6F00"
+        android:strokeWidth="4"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M30,80 C30,52 78,52 78,80" />
+    <!-- Support pillars -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M22,80h4v8h-4zM82,80h4v8h-4zM52,68h4v20h-4z" />
+    <!-- Coaster car -->
+    <path
+        android:fillColor="#E53935"
+        android:pathData="M48,40h12v8h-12z" />
+    <path
+        android:fillColor="#B71C1C"
+        android:pathData="M50,48h2v4h-2zM56,48h2v4h-2z" />
+</vector>
