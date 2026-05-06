@@ -8,6 +8,15 @@ data class ReleaseNote(
 
 val CHANGELOG: List<ReleaseNote> = listOf(
     ReleaseNote(
+        version = "0.1.1",
+        date = "2026-05-06",
+        bullets = listOf(
+            "Dark mode: full dark color scheme for HUD, palette, dialogs, and settings",
+            "Theme picker in Settings → Appearance: System / Light / Dark",
+            "Theme choice persists across updates (lives in SharedPreferences, separate from your park save)",
+        ),
+    ),
+    ReleaseNote(
         version = "0.1.0",
         date = "2026-05-05",
         bullets = listOf(

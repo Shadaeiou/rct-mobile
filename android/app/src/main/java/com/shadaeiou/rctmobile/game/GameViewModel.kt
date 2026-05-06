@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.shadaeiou.rctmobile.data.LoadResult
 import com.shadaeiou.rctmobile.data.ParkRepository
 import com.shadaeiou.rctmobile.data.ParkState
+import com.shadaeiou.rctmobile.data.ThemePreference
+import com.shadaeiou.rctmobile.data.UserPreferences
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.delay
@@ -22,6 +24,7 @@ const val TICKS_PER_AUTOSAVE = 8
 class GameViewModel(app: Application) : AndroidViewModel(app) {
 
     private val repo = ParkRepository(app)
+    private val userPreferences = UserPreferences(app)
 
     private val _ui = MutableStateFlow<UiState>(UiState.Loading)
     val ui: StateFlow<UiState> = _ui.asStateFlow()
@@ -31,6 +34,9 @@ class GameViewModel(app: Application) : AndroidViewModel(app) {
 
     private val _saveStatus = MutableStateFlow(SaveStatus.Idle)
     val saveStatus: StateFlow<SaveStatus> = _saveStatus.asStateFlow()
+
+    private val _themePreference = MutableStateFlow(userPreferences.theme)
+    val themePreference: StateFlow<ThemePreference> = _themePreference.asStateFlow()
 
     private var tickJob: Job? = null
     private var ticksSinceSave = 0
@@ -84,6 +90,11 @@ class GameViewModel(app: Application) : AndroidViewModel(app) {
         val next = current.copy(paused = !current.paused)
         _ui.value = UiState.Playing(next)
         saveNow(next)
+    }
+
+    fun setThemePreference(pref: ThemePreference) {
+        userPreferences.theme = pref
+        _themePreference.value = pref
     }
 
     /**

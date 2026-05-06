@@ -8,7 +8,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -32,7 +34,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         handleAutoUpdateIntent(intent)
         setContent {
-            RctTheme {
+            val themePref by gameVm.themePreference.collectAsStateWithLifecycle()
+            RctTheme(preference = themePref) {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     val nav = rememberNavController()
                     NavHost(navController = nav, startDestination = "game") {

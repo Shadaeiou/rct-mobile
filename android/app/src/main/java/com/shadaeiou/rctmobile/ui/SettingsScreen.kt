@@ -22,6 +22,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -43,6 +46,7 @@ import com.shadaeiou.rctmobile.BuildConfig
 import com.shadaeiou.rctmobile.data.CHANGELOG
 import com.shadaeiou.rctmobile.data.DownloadResult
 import com.shadaeiou.rctmobile.data.ReleaseNote
+import com.shadaeiou.rctmobile.data.ThemePreference
 import com.shadaeiou.rctmobile.data.UpdateInfo
 import com.shadaeiou.rctmobile.data.Updater
 import com.shadaeiou.rctmobile.game.GameViewModel
@@ -71,6 +75,7 @@ fun SettingsScreen(
     var confirmReset by rememberSaveable { mutableStateOf(false) }
 
     val gameUi by vm.ui.collectAsStateWithLifecycle()
+    val themePref by vm.themePreference.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -92,6 +97,15 @@ fun SettingsScreen(
                 .verticalScroll(rememberScrollState()),
         ) {
             (gameUi as? UiState.Playing)?.let { ParkStatsBlock(it) }
+
+            Spacer(Modifier.height(16.dp))
+            HorizontalDivider()
+            Spacer(Modifier.height(16.dp))
+
+            AppearanceSection(
+                current = themePref,
+                onSelect = vm::setThemePreference,
+            )
 
             Spacer(Modifier.height(16.dp))
             HorizontalDivider()
@@ -256,6 +270,36 @@ fun SettingsScreen(
                     },
                 )
             }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun AppearanceSection(
+    current: ThemePreference,
+    onSelect: (ThemePreference) -> Unit,
+) {
+    Text("Appearance", style = MaterialTheme.typography.titleMedium)
+    Spacer(Modifier.height(4.dp))
+    Text(
+        "Pick a theme. \"System\" follows your phone's light/dark setting.",
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
+    Spacer(Modifier.height(12.dp))
+    val options = listOf(
+        ThemePreference.SYSTEM to "System",
+        ThemePreference.LIGHT to "Light",
+        ThemePreference.DARK to "Dark",
+    )
+    SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
+        options.forEachIndexed { index, (pref, label) ->
+            SegmentedButton(
+                selected = current == pref,
+                onClick = { onSelect(pref) },
+                shape = SegmentedButtonDefaults.itemShape(index, options.size),
+            ) { Text(label) }
         }
     }
 }
